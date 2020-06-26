@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 } */
+
+.wineShow {
+  visibility: visible;
+}
+
+.wineHidden {
+  visibility: hidden;
+}
