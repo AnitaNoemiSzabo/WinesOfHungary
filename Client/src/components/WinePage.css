@@ -1,0 +1,16 @@
+.wineShow {
+    visibility: visible;
+  }
+  
+  .wineHidden {
+    visibility: hidden;
+    display: none;
+  }
+
+  ul {
+    list-style-type: none;
+  }
+
+  .zoom:hover{
+      transform: scale(1.2); 
+  }

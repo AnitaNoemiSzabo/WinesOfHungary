@@ -15,12 +15,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//I ADDED
 app.get("/", function (req, res, next) {
   res.send("Welcome to the backend of your app");
 });
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+//I ADDED
 app.use('/winelist', winelistRouter);
+app.use('/winelist/regionlist', winelistRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
