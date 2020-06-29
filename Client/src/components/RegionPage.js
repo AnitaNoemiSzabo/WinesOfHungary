@@ -10,9 +10,9 @@ constructor(props) {
     };
   }
 
-// componentDidMount() {
-//     this.getRegionlist();
-//   }
+componentDidMount() {
+    this.getRegionlist();
+  }
 
   getRegionlist= () => {
     fetch(`winelist/regionlist`)
