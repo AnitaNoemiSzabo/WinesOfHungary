@@ -49,5 +49,12 @@ router.get("/regionlist/:id", function(req, res, next) {
 });
 
 
+router.get("/filtered/:id", function(req, res, next) {
+  db(`SELECT * FROM winelist WHERE id = ${req.params.id};`)
+    .then(results => {
+      res.send(results.data);
+    })
+    .catch(err => res.status(500).send(err));
+});
 
 module.exports = router;

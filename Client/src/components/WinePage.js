@@ -5,8 +5,10 @@ export default class WinePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          wineShow: false,
+          // wineShow: false,
           winelist: [],  
+          showWine: []
+
         };
       }
 
@@ -18,17 +20,18 @@ componentDidMount() {
     fetch(`/winelist`)
       .then(response => response.json())
       .then(response => {
+        console.log(response);
         this.setState({ winelist: response });
       });
   };
   
-  getWinelistByRegion= (id) => {
-    fetch(`/winelist/regionlist/${id}`)
-      .then(response => response.json())
-      .then(response => {
-        this.setState({ winelist: response });
-      });
-  };
+  // getWinelistByRegion= (id) => {
+  //   fetch(`/winelist/regionlist/${id}`)
+  //     .then(response => response.json())
+  //     .then(response => {
+  //       this.setState({ winelist: response });
+  //     });
+  // };
 
 
 // DO I NEED?
@@ -43,15 +46,23 @@ componentDidMount() {
 
 
 
-  //  filterWinelist (filteredWines) {
-  //     this.setState({
-  //         winelist: filteredWines
-  //     });
-  // }
 
   handleClick(e){
-      this.setState({
-      wineShow: !this.state.wineShow
+   // wineShow: !this.state.wineShow
+      
+   for (let i=0 ;i<this.state.winelist.length; i++){
+    this.state.showWine[i] = false;
+  }
+      
+    let wineShow = [...this.state.showWine];
+      // wineShow.forEach(element => false);
+
+      // showWine[...this.state,showWine]
+
+      wineShow[e.target.name-1]=  true;
+      console.log(e.target.name-1)
+        this.setState({
+        showWine: wineShow
     });           
   }
 
@@ -65,17 +76,36 @@ componentDidMount() {
 //     });
 // };
 
-  getWinesByRegion= id => {
-  fetch(`/winelist/regionlist/${id}`)
-    .then(res => res.json())
-    .then(res => {
-      this.setState({ winelist: res});
-    });
-};
+//   getWinesByRegion= id => {
+//   fetch(`/winelist/regionlist/${id}`)
+//     .then(res => res.json())
+//     .then(res => {
+//       this.setState({ winelist: res});
+//     });
+// };
 
 
+
+filterWinelist (filteredWines) {
+  this.setState({
+      winelist: filteredWines
+  });
+}
+
+//TO ISSUE THE QUERY
   handleDropdown(e) {
-      this.filterWinelist(e.target.value);
+      //get the id of the regionn(e.target.name)
+      //query to database to get the filtered list of wines pass the id as a parameter (e.target.name)
+    //send the response of the query to this.filter.winelist OR INSTEAD MODIFY 
+
+    //   fetch(`/winelist`)  TO CHANGE THE PARAMETER
+    //     .then(response => response.json())
+    //     .then(response => {
+    //       console.log(response);
+    //       this.setState({ winelist: response });
+    //     });
+
+
   }
 
  
@@ -91,7 +121,7 @@ componentDidMount() {
          </div>
            <form className="winefilter">
             <select onChange={this.handleDropdown.bind(this)}>
-                <option name="balaton">Balaton</option>
+                <option name="balaton">Balaton</option>  //TO WRITE REGION ID!! (1,...)
                 <option name="sopron">Sopron</option>
                 <option name="tokajHegyalja">Tokaj – Hegyalja</option>
                 <option name="eger">Eger</option>
@@ -106,17 +136,18 @@ componentDidMount() {
         <ul>
           {this.state.winelist.map((winelist,id) => {
           return (
-            <li key ={winelist.id}>
-            <span onClick={() => this.getWinelist(winelist.id)}>
+            <li key ={winelist.ID}>
+            {/* <span onClick={() => this.getWinelist(winelist.id)}> */}
             <div>
-              <img className ="zoom" onClick={(e) => this.handleClick()} src={winelist.Image} width="150px" height = "180px" alt = {winelist.wine_name}/>
+              <img className ="zoom" onClick={(e) => this.handleClick(e)} name={winelist.ID} src={winelist.Image} width="150px" height = "180px" alt = {winelist.wine_name}/>
                 <br/>
                 <br/>
-              <h4 onClick={(e) => this.handleClick()} >{winelist.wine_name} </h4>
+              {/* <h4 onClick={(e) => this.handleClick()} >{winelist.wine_name} </h4> */}
                 <br/>
                 <br/>
             </div>
-            <div className={this.state.wineShow ? "wineShow" : "wineHidden"}>
+            {/* <div className={this.state.wineShow ? "wineShow" : "wineHidden"}> */}
+            <div className={this.state.showWine[winelist.ID-1] ? "wineShow" : "wineHidden"}>
               <p>Wine region: {winelist.wine_region} </p>
               <p> Winery: {winelist.winery} </p>
               <p>Grape: {winelist.grape}</p>
@@ -124,7 +155,7 @@ componentDidMount() {
               <p> Price: EUR {winelist.price}.00</p>
                 <br/>
             </div>
-            </span>
+            {/* </span> */}
             </li>
             );
           }
