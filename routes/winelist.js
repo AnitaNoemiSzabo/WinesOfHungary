@@ -12,49 +12,13 @@ function getItems(req, res) {
 }
 
 
-router.get("/", function(req, res, next) {
-  
-  db("SELECT * FROM winelist;")
+router.get("/winelist-with-region", function(req,res,next){
+  db("select winelist.wine_name as Wine, winelist.wine_category as Category, winelist.winery as Winery, winelist.grape as Grape, winelist.image as Image, winelist.price as Price, regionlist.wine_region as Region, regionlist.region_description as RegionDescription, regionlist.region_image as RegionImage, winelist.ID as ID from winelist INNER JOIN regionlist ON winelist.regionlist_id=regionlist.ID;")
     .then(results => {
       res.send(results.data);
     })
     .catch(err => res.status(500).send(err));
 });
 
-router.get("/regionlist/", function(req, res, next) {
-  
-  db("SELECT * FROM regionlist;")
-    .then(results => {
-      res.send(results.data);
-    })
-    .catch(err => res.status(500).send(err));
-});
-
-
-router.get("/:id", function(req, res, next) {
-  db(`SELECT * FROM winelist WHERE id = ${req.params.id};`)
-    .then(results => {
-      res.send(results.data);
-    })
-    .catch(err => res.status(500).send(err));
-});
-
-//TO DIFFERENCIATE FROM THE OTHER LIST
-router.get("/regionlist/:id", function(req, res, next) {
-  db(`SELECT * FROM regionlist WHERE id = ${req.params.id};`)
-    .then(results => {
-      res.send(results.data);
-    })
-    .catch(err => res.status(500).send(err));
-});
-
-
-router.get("/filtered/:id", function(req, res, next) {
-  db(`SELECT * FROM winelist WHERE id = ${req.params.id};`)
-    .then(results => {
-      res.send(results.data);
-    })
-    .catch(err => res.status(500).send(err));
-});
 
 module.exports = router;
